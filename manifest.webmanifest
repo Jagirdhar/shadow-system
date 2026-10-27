@@ -1,0 +1,19 @@
+{
+  "name": "SHADOW SYSTEM \u2014 Personal Hunter Interface",
+  "short_name": "Shadow System",
+  "description": "Personal quest-based fitness, habits, Salah checklist, and progress tracker.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070914",
+  "theme_color": "#080b16",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

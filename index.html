@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b16">
+  <meta name="description" content="Your personal quest-based fitness, habits, and Salah tracker.">
+  <title>SHADOW SYSTEM</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Shadow System home"><span class="brand-mark">影</span><span>SHADOW<span class="accent"> SYSTEM</span><small>PERSONAL HUNTER INTERFACE</small></span></a>
+    <div class="top-actions">
+      <span id="todayLabel" class="date-label"></span>
+      <button id="installBtn" class="button button-outline hidden" type="button">Install app</button>
+      <button id="notifyBtn" class="icon-button" title="Enable reminders" aria-label="Enable reminders">♧</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="sidebar panel">
+      <div class="player-card">
+        <div class="avatar"><span>影</span><i></i></div>
+        <div class="player-name">PLAYER ONE</div>
+        <div class="rank-pill" id="rankLabel">E-RANK HUNTER</div>
+        <div class="level-line"><span>LEVEL <b id="levelSide">1</b></span><span id="xpSide">0 XP</span></div>
+        <div class="progress-track"><div id="xpBarSide" class="progress-fill"></div></div>
+        <div class="small muted" id="xpToNext">100 XP to next level</div>
+      </div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span>◈</span> Dashboard</button>
+        <button class="nav-item" data-view="quests"><span>☷</span> Quest Board <b id="navQuestCount" class="nav-count">0</b></button>
+        <button class="nav-item" data-view="fitness"><span>✦</span> Training Ground</button>
+        <button class="nav-item" data-view="boss"><span>⚔</span> Weekly Boss</button>
+        <button class="nav-item" data-view="prayer"><span>☾</span> Salah & Learning</button>
+        <button class="nav-item" data-view="history"><span>▤</span> History & Stats</button>
+      </nav>
+      <div class="sidebar-foot"><span class="live-dot"></span> LOCAL SAVE ACTIVE <span id="saveStatus" class="muted">•</span></div>
+    </aside>
+
+    <section class="main-content">
+      <section class="view active" id="view-dashboard">
+        <div class="hero panel">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="live-dot"></span> SYSTEM ONLINE</div>
+            <h1>ARISE<span>.</span></h1>
+            <p>Your progress is built one quest at a time. Complete today's missions, earn XP, and become more consistent.</p>
+            <button class="button button-primary" data-goto="quests">View today's quests <span>→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true"><div class="sigil">影</div><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="hero-rune">HUNTER<br>PROTOCOL</div></div>
+          <div class="hero-bottom"><span>DAILY PROTOCOL</span><span id="heroDate"></span></div>
+        </div>
+
+        <div class="stat-grid">
+          <article class="stat-card panel"><div class="stat-top"><span>PLAYER LEVEL</span><span>◈</span></div><div class="stat-value" id="levelMain">1</div><div class="stat-foot" id="rankMain">E-RANK HUNTER</div></article>
+          <article class="stat-card panel"><div class="stat-top"><span>TOTAL XP</span><span>✧</span></div><div class="stat-value" id="xpMain">0</div><div class="stat-foot">Earned from verified quests</div></article>
+          <article class="stat-card panel"><div class="stat-top"><span>QUESTS CLEARED</span><span>✓</span></div><div class="stat-value" id="completedMain">0</div><div class="stat-foot">All-time completed</div></article>
+          <article class="stat-card panel"><div class="stat-top"><span>CURRENT STREAK</span><span>♨</span></div><div class="stat-value"><span id="streakMain">0</span><small> days</small></div><div class="stat-foot">Keep showing up</div></article>
+        </div>
+
+        <div class="section-heading"><div><div class="eyebrow">TODAY'S OBJECTIVES</div><h2>Daily Quest Log</h2></div><button class="text-button" data-goto="quests">All quests ↗</button></div>
+        <div id="dashboardQuests" class="quest-list"></div>
+
+        <div class="two-col">
+          <article class="panel mini-panel">
+            <div class="section-heading compact"><div><div class="eyebrow">BODY STATUS</div><h3>Training Snapshot</h3></div><span class="panel-icon">✦</span></div>
+            <div class="metric-row"><span>Latest weight</span><strong id="dashWeight">Not logged</strong></div>
+            <div class="metric-row"><span>Today's steps</span><strong id="dashSteps">0</strong></div>
+            <div class="metric-row"><span>Workouts logged</span><strong id="dashWorkouts">0</strong></div>
+            <button class="button button-outline full-width" data-goto="fitness">Open training ground</button>
+          </article>
+          <article class="panel mini-panel">
+            <div class="section-heading compact"><div><div class="eyebrow">WEEKLY CHALLENGE</div><h3 id="dashBossName">The Consistency Gate</h3></div><span class="panel-icon">⚔</span></div>
+            <p class="muted small" id="dashBossDesc">Complete daily objectives and build your consistency.</p>
+            <div class="boss-progress-line"><div class="progress-track"><div id="dashBossBar" class="progress-fill"></div></div><strong id="dashBossCount">0/5</strong></div>
+            <button class="button button-outline full-width" data-goto="boss">View boss battle</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-quests">
+        <div class="page-heading"><div class="eyebrow">MISSION CONTROL / 01</div><h1>Quest Board</h1><p>Every quest has a clear completion rule. Mark it complete only after you've done it.</p></div>
+        <div class="filter-row"><div class="filter-pill active">TODAY</div><span class="muted small">Resets by local date • Completed quests remain in your history</span></div>
+        <div id="allQuests" class="quest-list"></div>
+        <div class="panel note-panel"><span class="note-symbol">!</span><div><strong>Hunter protocol</strong><p>Progress is not punishment. If you're ill, unusually fatigued, or in pain, use a recovery option. Never exercise through sharp or radiating back pain.</p></div></div>
+      </section>
+
+      <section class="view" id="view-fitness">
+        <div class="page-heading"><div class="eyebrow">BODY DEVELOPMENT / 02</div><h1>Training Ground</h1><p>Record your activity and build strength gradually. This is a tracker, not a medical diagnosis.</p></div>
+        <div class="fitness-grid">
+          <article class="panel form-panel"><div class="section-heading compact"><div><div class="eyebrow">DAILY MOVEMENT</div><h3>Activity Log</h3></div></div>
+            <form id="activityForm">
+              <label>Steps today<input type="number" min="0" max="100000" id="stepsInput" placeholder="e.g. 6000" required></label>
+              <label>Workout minutes<input type="number" min="0" max="240" id="minutesInput" placeholder="e.g. 25"></label>
+              <label>Session type<select id="workoutType"><option value="Walk">Walking</option><option value="Strength">Strength training</option><option value="Mobility">Gentle mobility</option><option value="Recovery">Recovery day</option><option value="Other">Other</option></select></label>
+              <label>How did it feel?<select id="effortInput"><option value="Easy">Easy / comfortable</option><option value="Moderate">Moderate</option><option value="Hard">Hard</option><option value="Pain">Pain or symptoms</option></select></label>
+              <button class="button button-primary full-width" type="submit">Save activity log</button>
+            </form>
+          </article>
+          <article class="panel form-panel"><div class="section-heading compact"><div><div class="eyebrow">BODY COMPOSITION</div><h3>Weight Log</h3></div></div>
+            <form id="weightForm">
+              <label>Weight (kg)<input type="number" min="20" max="350" step="0.1" id="weightInput" placeholder="e.g. 120.7" required></label>
+              <label>Optional note<input type="text" id="weightNote" maxlength="120" placeholder="Sleep, energy, etc."></label>
+              <button class="button button-primary full-width" type="submit">Record weight</button>
+            </form>
+            <div class="weight-summary"><span class="muted">Latest entry</span><strong id="latestWeight">No weight recorded</strong></div>
+          </article>
+        </div>
+        <div class="section-heading"><div><div class="eyebrow">WEEKLY SPLIT</div><h2>Strength Quest Rotation</h2></div></div>
+        <div class="training-days">
+          <article class="training-day"><span class="day-num">DAY 01</span><h3>Chest + Triceps</h3><p>Wall or elevated push-ups, light chest press if comfortable, triceps extensions.</p><span class="tag">20–30 MIN</span></article>
+          <article class="training-day"><span class="day-num">DAY 02</span><h3>Back + Biceps</h3><p>Supported light rows and curls with a neutral spine. Avoid unsupported bent-over moves if symptoms occur.</p><span class="tag">20–30 MIN</span></article>
+          <article class="training-day rest"><span class="day-num">DAY 03</span><h3>Recovery + Walk</h3><p>Easy walk and gentle mobility only if comfortable.</p><span class="tag">RECOVERY</span></article>
+          <article class="training-day"><span class="day-num">DAY 04</span><h3>Legs + Glutes</h3><p>Chair sit-to-stands and supported calf raises, within a comfortable range.</p><span class="tag">20–25 MIN</span></article>
+          <article class="training-day"><span class="day-num">DAY 05</span><h3>Shoulders + Core</h3><p>Light seated shoulder press if comfortable, wall push-ups and gentle abdominal bracing.</p><span class="tag">20–25 MIN</span></article>
+          <article class="training-day rest"><span class="day-num">DAY 06</span><h3>Rest / Easy Walk</h3><p>Recover. Rest is part of getting stronger.</p><span class="tag">RECOVERY</span></article>
+          <article class="training-day"><span class="day-num">DAY 07</span><h3>Choose by Recovery</h3><p>Repeat a comfortable session or take a rest day. Do not increase load just to keep a streak.</p><span class="tag">FLEX DAY</span></article>
+        </div>
+        <div class="panel note-panel warning"><span class="note-symbol">!</span><div><strong>Back-safety rule</strong><p>You previously described lower-back pain with shock-like pain into your leg. Avoid deadlifts and any move that triggers symptoms; arrange a clinician/physiotherapist assessment before progressing. Stop and seek urgent care for new leg weakness, saddle-area numbness, or bladder/bowel changes.</p></div></div>
+        <div class="section-heading"><div><div class="eyebrow">RECENT LOGS</div><h2>Activity Records</h2></div></div>
+        <div id="activityHistory" class="panel table-panel"></div>
+      </section>
+
+      <section class="view" id="view-boss">
+        <div class="page-heading"><div class="eyebrow">WEEKLY TRIAL / 03</div><h1>Boss Battle</h1><p>Defeat the weekly boss with consistency—not extreme workouts.</p></div>
+        <div class="boss-hero panel"><div class="boss-emblem">⚔</div><div class="boss-content"><div class="eyebrow">CURRENT BOSS • WEEKLY RESET</div><h2 id="bossTitle">The Consistency Gate</h2><p id="bossText">Clear five eligible daily objectives across this week to complete the trial.</p><div class="boss-progress-line"><div class="progress-track"><div id="bossBar" class="progress-fill"></div></div><strong id="bossProgress">0/5</strong></div><div class="boss-reward">REWARD <strong>+150 XP</strong> <span>• one time per week</span></div></div></div>
+        <div class="section-heading"><div><div class="eyebrow">BATTLE CONDITIONS</div><h2>Weekly objectives</h2></div></div>
+        <div class="boss-conditions panel"><div class="condition"><span class="condition-icon">✓</span><div><strong>Clear daily quests</strong><p>Each date with at least one completed daily quest counts as a battle mark.</p></div></div><div class="condition"><span class="condition-icon">✦</span><div><strong>Choose safe movement</strong><p>Walking, gentle training, or recovery can all count. Do not force a workout through pain.</p></div></div><div class="condition"><span class="condition-icon">☾</span><div><strong>Return consistently</strong><p>Reach five qualifying days in the current local week. Your reward is granted once per week.</p></div></div></div>
+      </section>
+
+      <section class="view" id="view-prayer">
+        <div class="page-heading"><div class="eyebrow">SPIRITUAL DEVELOPMENT / 04</div><h1>Salah & Learning</h1><p>A private checklist to help organize your worship and learning. These are personal reminders, not religious rulings.</p></div>
+        <div class="panel prayer-panel"><div class="prayer-top"><div><div class="eyebrow">TODAY'S SPIRITUAL QUESTS</div><h2>Keep your intentions sincere</h2></div><span class="crescent">☾</span></div><div id="prayerQuests" class="prayer-list"></div><p class="muted small">Prayer times vary by location and date. Use a trusted local timetable or your preferred prayer-time app; this app does not calculate adhan times.</p></div>
+        <div class="two-col">
+          <article class="panel mini-panel"><div class="eyebrow">LEARNING QUEST</div><h3>One beneficial lesson</h3><p class="muted">Choose a short, reliable lesson in Qur'an, authentic Hadith, Arabic, or Salah basics.</p><button class="button button-outline full-width" id="learningDone">Mark learning complete (+15 XP)</button></article>
+          <article class="panel mini-panel"><div class="eyebrow">INTENTION</div><h3>Small and consistent</h3><p class="muted">Focus on sincerity and consistency. Don't treat worship as a competition or use XP as a measure of spiritual worth.</p><button class="button button-outline full-width" id="resetPrayer">Reset today's checklist</button></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-history">
+        <div class="page-heading"><div class="eyebrow">PLAYER RECORD / 05</div><h1>History & Stats</h1><p>Your progress is saved in this browser on this device.</p></div>
+        <div class="stat-grid history-stats"><article class="stat-card panel"><div class="stat-top">TOTAL XP</div><div class="stat-value" id="historyXP">0</div></article><article class="stat-card panel"><div class="stat-top">QUESTS CLEARED</div><div class="stat-value" id="historyDone">0</div></article><article class="stat-card panel"><div class="stat-top">WEIGHT ENTRIES</div><div class="stat-value" id="historyWeights">0</div></article><article class="stat-card panel"><div class="stat-top">ACTIVITY LOGS</div><div class="stat-value" id="historyActivities">0</div></article></div>
+        <div class="two-col">
+          <article class="panel mini-panel"><div class="section-heading compact"><div><div class="eyebrow">XP GROWTH</div><h3>Recent XP gains</h3></div></div><div id="xpHistory" class="history-list"></div></article>
+          <article class="panel mini-panel"><div class="section-heading compact"><div><div class="eyebrow">WEIGHT TRACKER</div><h3>Recent entries</h3></div></div><div id="weightHistory" class="history-list"></div></article>
+        </div>
+        <div class="section-heading"><div><div class="eyebrow">DATA CONTROL</div><h2>Backup & Reset</h2></div></div>
+        <div class="panel data-panel"><div><strong>Export your save</strong><p class="muted small">Download a JSON backup of your progress before changing browsers or devices.</p></div><button id="exportBtn" class="button button-outline">Export backup</button><label class="import-label">Import backup<input type="file" id="importFile" accept="application/json"></label><button id="resetAllBtn" class="button button-danger">Reset all data</button></div>
+        <p class="muted small">Local storage is not encrypted and may be erased if browser data is cleared. Export backups periodically. No account or cloud sync is configured.</p>
+      </section>
+
+      <footer class="footer"><span>SHADOW SYSTEM v1.0</span><span>BUILD YOUR CONSISTENCY.</span></footer>
+    </section>
+  </main>
+  <nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="dashboard">⌂<small>Home</small></button><button data-view="quests">☷<small>Quests</small></button><button data-view="fitness">✦<small>Train</small></button><button data-view="prayer">☾<small>Salah</small></button><button data-view="history">▤<small>Stats</small></button></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
